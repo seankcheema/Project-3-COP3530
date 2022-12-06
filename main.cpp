@@ -54,7 +54,7 @@ int main() {
                 cin >> followers;
                 splayTree.insert(splayTree.getRoot(), username, password, followers);
                 cout << "\n" << splayTree.getRoot()->username << " has been inserted!\n";
-                //redBlackTree.insert(username, password, followers);
+                redBlackTree.insert(username, password, followers);
                 break;
 
             case 2:
@@ -62,14 +62,14 @@ int main() {
                 cout << "Username: ";
                 cin >> username;
                 splayTree.remove(username); // returns null or node (not sure what we want to do with this as far as printing)
-                //redBlackTree.remove(username);
+                redBlackTree.remove(username);
                 break;
             case 3:
                 cout << "\n-----SEARCH-----\n";
                 cout << "Username: ";
                 cin >> username;
                 if(splayTree.search(username) == nullptr) cout << "\nNot found\n"; // returns null or node (not sure what we want to do with this as far as printing)
-                //if(redBlackTree.search(username) == nullptr) cout << "\nNot found\n";
+                if(redBlackTree.search(username) == nullptr) cout << "\nNot found\n";
                 break;
             case 4:
                 cout << "\nGoodbye!";

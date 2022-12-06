@@ -50,8 +50,6 @@ Splay::Node *Splay::remove(const string& username) { // remove node
     if(remove == nullptr) return nullptr;
     cout << "Removed " << username << " with password " << remove->password << " and followers " << remove->followers << ".\n";
 
-    root = splay(root, remove->username);
-
     if(root->left == nullptr && root->right == nullptr){
         root = nullptr;
     }
@@ -63,7 +61,8 @@ Splay::Node *Splay::remove(const string& username) { // remove node
         temp = root;
         Node* max = root->left;
         while(max->right != nullptr) max = max->right;
-        root = splay(root->left, max->username);
+        max = splay(root->left, max->username);
+        root = max;
         root->right = temp->right;
     }
 
@@ -78,7 +77,7 @@ Splay::Node *Splay::search(const string& username) { // search by username. retu
         if(username == node->username){
             cout << "Found " << username << " with password " << node->password << " and followers " << node->followers << ".\n";
             root = splay(root, username); // splays when node is accessed
-            return node;
+            return root;
         }
         else if(username > node->username && node->right != nullptr) node = node->right;
         else if(username < node->username && node->left != nullptr) node = node->left;
