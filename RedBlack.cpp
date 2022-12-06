@@ -1,8 +1,8 @@
 //
 // Created by benev on 12/4/2022.
 //
-
 #include "RedBlack.h"
+
 RedBlack::Node::Node() {
     username = "";
     password = "";
@@ -20,12 +20,9 @@ RedBlack::Node::Node(string cUsername, string cPassword, int cFollowers, bool cR
     red = false;
 }
 RedBlack:: Node* RedBlack::insert(const string &username, const string &password, unsigned int followers) {
-    root = insertHelper(root, username, password, followers);
-
-
+    return insertHelper(root, username, password, followers);
 }
-RedBlack:: Node* RedBlack::insertHelper(Node *node, const string &username, const string &password,
-                                        unsigned int followers) {
+RedBlack:: Node* RedBlack::insertHelper(Node *node, const string &username, const string &password, unsigned int followers) {
     if (node == nullptr){
         Node* newNode = new Node();
         newNode->username = username;
@@ -33,6 +30,7 @@ RedBlack:: Node* RedBlack::insertHelper(Node *node, const string &username, cons
         newNode->followers = followers;
         newNode->left = nullptr;
         newNode->right = nullptr;
+        if(root == nullptr) root = newNode;
         node = newNode;
     }
     else if (username < node->username){
@@ -48,25 +46,25 @@ RedBlack:: Node* RedBlack::insertHelper(Node *node, const string &username, cons
 
 }
 RedBlack::Node* RedBlack::remove(const string &username) {
-    root = removeHelper(root, username);
-
+    return removeHelper(root, username);
 }
 RedBlack::Node *RedBlack::removeHelper(Node *node, const string &username) {
-    Node * remove = search(root, username);
+    Node * remove = search(username);
     Node* temp;
     if (remove == nullptr){
         return nullptr;
     }
-
-    if (remove->left != nullptr && remove->right != nullptr){
-        temp = node->right;
+    else if(node == nullptr){
+        return nullptr;
+    }
+    else if (remove->left != nullptr && remove->right != nullptr){
+        temp = remove->right;
         while(temp->left != nullptr){
             temp = temp->left;
         }
         remove->username = temp->username;
         remove->password = temp->password;
         remove->followers = temp->followers;
-        remove->right = removeHelper(node->right, temp->username);
     }
     else if(remove->left != nullptr){
         remove->username = remove->left->username;
@@ -84,25 +82,30 @@ RedBlack::Node *RedBlack::removeHelper(Node *node, const string &username) {
     }
     else{
         delete remove;
-        remove = nullptr;
     }
     balance(node);
     return node;
 }
 
-RedBlack::Node *RedBlack::search(Node* node, const string &username) {
+RedBlack::Node *RedBlack::search(const string &username) {
+    return searchRecur(root, username);
+}
+
+RedBlack::Node *RedBlack::searchRecur(Node* node, const string &username) {
     if(node->username == username){
         return node;
     }
-    else if(username > node->username){
-        node = search(node->right, username);
+    else if(username > node->username && node->right != nullptr){
+        node = searchRecur(node->right, username);
     }
-    else if(username < node->username){
-        node = search(node->left, username);
+    else if(username < node->username && node->left != nullptr){
+        node = searchRecur(node->left, username);
     }
     else {
         return nullptr;
     }
+
+    return node;
 
 }
 
@@ -112,6 +115,7 @@ RedBlack::Node *RedBlack::leftRotate(Node *node) {
     parent->left = node;
     node->right = newChild;
     balance(node);
+    return parent;
 }
 
 RedBlack::Node* RedBlack::rightRotate(Node *node) {
@@ -119,6 +123,7 @@ RedBlack::Node* RedBlack::rightRotate(Node *node) {
     Node* newChild = node->left->right;
     parent->left = node;
     node->right = newChild;
+    return parent;
 }
 
 RedBlack:: Node* RedBlack::findParent(string &username) {
@@ -150,7 +155,7 @@ RedBlack:: Node* RedBlack::findParent(string &username) {
 
 RedBlack::Node* RedBlack::balance(Node *node) {
     Node* parent = findParent(node->username);
-    while((parent->red) && node != root){
+    while(parent != nullptr && (parent->red) && node != root){
         Node* grandParent = findParent(parent->username);
         Node* uncle;
         if (parent == grandParent->right){
@@ -192,4 +197,27 @@ RedBlack::Node* RedBlack::balance(Node *node) {
         }
     }
     root->red = false;
+    return node;
 }
+
+RedBlack::RedBlack() {
+    root = nullptr;
+}
+
+RedBlack::~RedBlack() {
+    deleteRecur(root);
+}
+
+void RedBlack::deleteRecur(RedBlack::Node *node) {
+    if(node != nullptr){
+        deleteRecur(node->left);
+        deleteRecur(node->right);
+        node->username = "";
+        node->password = "";
+        node->followers = 0;
+        node->red = false;
+        delete node;
+    }
+}
+
+

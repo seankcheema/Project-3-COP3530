@@ -18,10 +18,10 @@ public:
     Node* insertHelper(Node* node, const string& username, const string& password, unsigned int followers);
     Node * remove(const string& username);
     Node* removeHelper(Node* node, const string& username);
-    Node* search(Node* node, const string& username);
+    Node* search(const string& username);
+    Node* searchRecur(Node* node, const string& username);
     Node* findParent(string & username);
     void deleteRecur(Node* node);
-    Node* getRoot();
     Node* rightRotate(Node* node);
     Node* leftRotate(Node* node);
     Node* balance(Node* node);
