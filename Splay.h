@@ -16,7 +16,7 @@ class Splay {
 public:
     Splay();
     ~Splay();
-    Node* insert(Node* node, const string& username, const string& password, unsigned int followers);
+    Node* insert(const string& username, const string& password, unsigned int followers);
     Node* remove(const string& username);
     Node* search(const string& username);
     Node* splay(Node* root, string username);

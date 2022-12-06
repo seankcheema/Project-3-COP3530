@@ -114,7 +114,6 @@ RedBlack::Node *RedBlack::leftRotate(Node *node) {
     Node* newChild = node->right->left;
     parent->left = node;
     node->right = newChild;
-    balance(node);
     return parent;
 }
 
