@@ -2,7 +2,6 @@
 // Created by skc32 on 12/4/2022.
 //
 #include <iostream>
-
 #include "Splay.h"
 
 Splay::Splay() { // default constructor
@@ -25,25 +24,6 @@ void Splay::deleteRecur(Splay::Node *node) { // destructor helper function
 }
 
 Splay::Node *Splay::insert(const string& username, const string& password, unsigned int followers) { // insert node
-//    if(node == nullptr){
-//        Node* newNode = new Node();
-//        newNode->username = username;
-//        newNode->password = password;
-//        newNode->followers = followers;
-//        newNode->left = nullptr;
-//        newNode->right = nullptr;
-//        if(root == nullptr) root = newNode;
-//        return newNode;
-//    }
-//
-//    if(username < node->username) node->left = insert(node->left, username, password, followers);
-//    else if(username > node->username) node->right = insert(node->right, username, password, followers);
-//    else return node;
-//
-//    root = splay(root, username);
-//
-//    return node;
-
     if(root == nullptr){
         root = new Node();
         root->username = username;
@@ -148,7 +128,7 @@ Splay::Node *Splay::splay(Splay::Node *r, string username) { // brings most rece
         if(r->right == nullptr) return r;
 
         if(username < r->right->username){ // Right Left Case
-            r->right->left = splay(root->right->left, username);
+            r->right->left = splay(r->right->left, username);
 
             if(r->right->left != nullptr) r->right = rightRot(r->right); // first rot
         }

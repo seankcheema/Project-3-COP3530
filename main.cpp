@@ -47,9 +47,7 @@ int main() {
         password = "";
         tempNum = "";
         count = 0;
-        //cout << i << "\n";
     }
-    cout << "after for loop ";
     chrono::time_point<chrono::system_clock> start, end;
 
     start = chrono::system_clock::now();
@@ -57,14 +55,14 @@ int main() {
         splayTree.insert(usernames.at(i), passwords.at(i), followerVec.at(i));
     }
     end = chrono::system_clock::now();
-    cout <<"\nSplay Tree initial insertion time: " << (end-start).count() << "\n";
+    cout <<"\nSplay Tree initial insertion time: " << chrono::duration_cast<chrono::milliseconds>(end-start).count() << " ms\n";
 
     start = chrono::system_clock::now();
     for(int i = 0; i<usernames.size(); i++){
         redBlackTree.insert(usernames.at(i), passwords.at(i), followerVec.at(i));
     }
     end = chrono::system_clock::now();
-    cout <<"Red-Black Tree initial insertion time: " << (end-start).count() << "\n";
+    cout <<"Red-Black Tree initial insertion time: " << chrono::duration_cast<chrono::milliseconds>(end-start).count() << " ms\n";
 
 
 
@@ -87,16 +85,15 @@ int main() {
                 start = chrono::system_clock::now();
                 splayTree.insert(username, password, followers);
                 end = chrono::system_clock::now();
-                cout <<"Splay Tree individual insertion time: " << (end-start).count() << "\n";
 
                 cout << "\n" << splayTree.getRoot()->username << " has been inserted!\n";
 
-                cout <<"Splay Tree individual insertion time: " << (end-start).count() << "\n";
+                cout <<"Splay Tree individual insertion time: " << chrono::duration_cast<chrono::microseconds>(end-start).count() << " microseconds\n";
 
                 start = chrono::system_clock::now();
                 redBlackTree.insert(username, password, followers);
                 end = chrono::system_clock::now();
-                cout <<"Red-Black Tree individual insertion time: " << (end-start).count() << "\n";
+                cout <<"Red-Black Tree individual insertion time: " << chrono::duration_cast<chrono::microseconds>(end-start).count() << " microseconds\n";
                 break;
             case 2:
                 cout << "\n-----REMOVE-----\n";
@@ -104,14 +101,14 @@ int main() {
                 cin >> username;
 
                 start = chrono::system_clock::now();
-                splayTree.remove(username); // returns null or node (not sure what we want to do with this as far as printing)
+                if(splayTree.remove(username) == nullptr) cout << "\nNot found\n"; // returns null or node
                 end = chrono::system_clock::now();
-                cout <<"Splay Tree removal time: " << (end-start).count() << "\n";
+                cout <<"Splay Tree removal time: " << chrono::duration_cast<chrono::microseconds>(end-start).count() << " microseconds\n";
 
                 start = chrono::system_clock::now();
-                redBlackTree.remove(username);
+                if(redBlackTree.search(username) == nullptr) cout << "\nNot found\n";
                 end = chrono::system_clock::now();
-                cout <<"Red-Black Tree removal time: " << (end-start).count() << "\n";
+                cout <<"Red-Black Tree removal time: " << chrono::duration_cast<chrono::microseconds>(end-start).count() << " microseconds\n";
                 break;
             case 3:
                 cout << "\n-----SEARCH-----\n";
@@ -119,14 +116,14 @@ int main() {
                 cin >> username;
 
                 start = chrono::system_clock::now();
-                if(splayTree.search(username) == nullptr) cout << "\nNot found\n"; // returns null or node (not sure what we want to do with this as far as printing)
+                if(splayTree.search(username) == nullptr) cout << "\nNot found\n"; // returns null or node
                 end = chrono::system_clock::now();
-                cout <<"Splay Tree search time: " << (end-start).count() << "\n";
+                cout << "Splay Tree search time: " << chrono::duration_cast<chrono::microseconds>(end - start).count() << " microseconds\n";
 
                 start = chrono::system_clock::now();
                 if(redBlackTree.search(username) == nullptr) cout << "\nNot found\n";
                 end = chrono::system_clock::now();
-                cout <<"Red-Black Tree search time: " << (end-start).count() << "\n";
+                cout <<"Red-Black Tree search time: " << chrono::duration_cast<chrono::microseconds>(end-start).count() << " microseconds\n";
                 break;
             case 4:
                 cout << "\nGoodbye!";

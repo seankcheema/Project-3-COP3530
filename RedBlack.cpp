@@ -118,8 +118,10 @@ RedBlack::Node *RedBlack::search(const string &username) {
 }
 // search recursive helper
 RedBlack::Node *RedBlack::searchRecur(Node* node, const string &username) {
+    if(node == nullptr) return nullptr;
+
     // if username is found , returns node
-    if(node->username == username){
+    else if(node->username == username){
         return node;
     }
         // else searches to right is username is greater than current node
